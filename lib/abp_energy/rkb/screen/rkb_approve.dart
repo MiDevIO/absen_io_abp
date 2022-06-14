@@ -1,14 +1,14 @@
 import 'package:face_id_plus/abp_energy/rkb/screen/detail_rkb.dart';
 import 'package:flutter/material.dart';
 
-class TotalRKB extends StatefulWidget {
-  const TotalRKB({Key? key}) : super(key: key);
+class ApproveRKB extends StatefulWidget {
+  const ApproveRKB({Key? key}) : super(key: key);
 
   @override
-  State<TotalRKB> createState() => _TotalRKBState();
+  State<ApproveRKB> createState() => _ApproveRKBState();
 }
 
-class _TotalRKBState extends State<TotalRKB> {
+class _ApproveRKBState extends State<ApproveRKB> {
   int _selectedNavbar = 0;
 
   void _changeSelectedNavBar(int index) {
@@ -66,7 +66,7 @@ class _TotalRKBState extends State<TotalRKB> {
                       height: 40,
                       child: DecoratedBox(
                         decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 32, 72, 142),
+                          color: Colors.green,
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(10),
                             topRight: Radius.circular(10),
@@ -250,8 +250,9 @@ class _TotalRKBState extends State<TotalRKB> {
       backgroundColor: Color.fromARGB(255, 11, 93, 156),
       type: BottomNavigationBarType.fixed,
       selectedItemColor: Colors.green,
-      unselectedItemColor: Colors.grey,
+      unselectedItemColor: Colors.white,
       selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+      unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
       showUnselectedLabels: true,
       onTap: _changeSelectedNavBar,
     );

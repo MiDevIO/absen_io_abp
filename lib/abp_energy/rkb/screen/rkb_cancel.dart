@@ -1,14 +1,14 @@
 import 'package:face_id_plus/abp_energy/rkb/screen/detail_rkb.dart';
 import 'package:flutter/material.dart';
 
-class TotalRKB extends StatefulWidget {
-  const TotalRKB({Key? key}) : super(key: key);
+class CancelRKB extends StatefulWidget {
+  const CancelRKB({Key? key}) : super(key: key);
 
   @override
-  State<TotalRKB> createState() => _TotalRKBState();
+  State<CancelRKB> createState() => _CancelRKBState();
 }
 
-class _TotalRKBState extends State<TotalRKB> {
+class _CancelRKBState extends State<CancelRKB> {
   int _selectedNavbar = 0;
 
   void _changeSelectedNavBar(int index) {
@@ -66,7 +66,7 @@ class _TotalRKBState extends State<TotalRKB> {
                       height: 40,
                       child: DecoratedBox(
                         decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 32, 72, 142),
+                          color: Colors.red,
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(10),
                             topRight: Radius.circular(10),

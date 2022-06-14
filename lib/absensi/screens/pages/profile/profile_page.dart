@@ -102,14 +102,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                             fontWeight: FontWeight.bold)),
                                   ),
                                   ListTile(
-                                    leading: const Icon(Icons.format_list_numbered),
+                                    leading:
+                                        const Icon(Icons.format_list_numbered),
                                     title: Text("${fUsers.nik}",
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold)),
                                   ),
                                   ListTile(
-                                    leading:
-                                        const Icon(Icons.business_center_rounded),
+                                    leading: const Icon(
+                                        Icons.business_center_rounded),
                                     title: Text("${fUsers.devisi}",
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold)),
@@ -137,42 +138,43 @@ class _ProfilePageState extends State<ProfilePage> {
                                 showDialog(
                                     context: context,
                                     builder: (context) {
-                                      return AlertDialog(
-                                        title: const Text("Pilih Foto"),
-                                        actions: [
-                                          Column(
+                                      return Dialog(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        elevation: 16,
+                                        child: SizedBox(
+                                          height: 230,
+                                          width: 400,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
                                             children: [
                                               Padding(
                                                 padding: const EdgeInsets.only(
-                                                    right: 210),
-                                                child: TextButton(
-                                                    onPressed: () {
-                                                      getImageCamera();
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    child: const Text("Kamera",
-                                                        style: TextStyle(
-                                                            color: Colors.blue,
-                                                            fontSize: 16))),
+                                                    left: 20),
+                                                child: Image.asset(
+                                                    "assets/images/dev.png",
+                                                    height: 100,
+                                                    width: 100),
                                               ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 222),
-                                                child: TextButton(
-                                                    onPressed: () {
-                                                      getImageGallery();
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    child: const Text("Galeri",
-                                                        style: TextStyle(
-                                                            color: Colors.blue,
-                                                            fontSize: 16))),
+                                              const SizedBox(height: 20),
+                                              const Text(
+                                                "Fitur Belum Tersedia",
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
+                                              const SizedBox(
+                                                height: 20,
+                                              ),
+                                              const Text(
+                                                  "Maaf, fitur sedang dalam tahap pengembangan")
                                             ],
                                           ),
-                                        ],
+                                        ),
                                       );
                                     });
                               },

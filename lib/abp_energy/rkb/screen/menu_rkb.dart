@@ -4,7 +4,11 @@ import 'package:face_id_plus/abp_energy/monitoring/screen/monitoring_hauling.dar
 import 'package:face_id_plus/abp_energy/monitoring/screen/monitoring_ob.dart';
 import 'package:face_id_plus/abp_energy/monitoring/screen/monitoring_stock_product.dart';
 import 'package:face_id_plus/abp_energy/monitoring/screen/monitoring_stockroom.dart';
+import 'package:face_id_plus/abp_energy/rkb/screen/rkb_approve.dart';
+import 'package:face_id_plus/abp_energy/rkb/screen/rkb_cancel.dart';
+import 'package:face_id_plus/abp_energy/rkb/screen/rkb_close.dart';
 import 'package:face_id_plus/abp_energy/rkb/screen/rkb_total.dart';
+import 'package:face_id_plus/abp_energy/rkb/screen/rkb_waiting.dart';
 import 'package:flutter/material.dart';
 
 class MenuRKB extends StatefulWidget {
@@ -89,7 +93,7 @@ class _MenuRKBState extends State<MenuRKB> {
                   context,
                   MaterialPageRoute(
                     builder: (BuildContext context) =>
-                        const MonitoringHauling(),
+                        const ApproveRKB(),
                   ),
                 );
               },
@@ -125,7 +129,7 @@ class _MenuRKBState extends State<MenuRKB> {
                   context,
                   MaterialPageRoute(
                     builder: (BuildContext context) =>
-                        const MonitoringCrushing(),
+                        const WaitingRKB(),
                   ),
                 );
               },
@@ -161,7 +165,7 @@ class _MenuRKBState extends State<MenuRKB> {
                   context,
                   MaterialPageRoute(
                     builder: (BuildContext context) =>
-                        const MonitoringBarging(),
+                        const CancelRKB(),
                   ),
                 );
               },
@@ -197,7 +201,7 @@ class _MenuRKBState extends State<MenuRKB> {
                     context,
                     MaterialPageRoute(
                         builder: (BuildContext context) =>
-                            const MonitoringStockRoom()));
+                            const CloseRKB()));
               },
               splashColor: Colors.blue,
               child: Center(

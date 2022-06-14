@@ -8,6 +8,8 @@ class MonitoringBarging extends StatefulWidget {
 }
 
 class _MonitoringBargingState extends State<MonitoringBarging> {
+  final Color _warna = const Color.fromARGB(255, 32, 72, 142);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,14 +53,19 @@ class _MonitoringBargingState extends State<MonitoringBarging> {
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: TextFormField(
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      borderSide: BorderSide(
-                        color: Colors.blue,
-                        width: 10,
-                      )),
+              decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    borderSide: BorderSide(color: _warna, width: 2),
+                  ),
+                  border: const OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    borderSide: BorderSide(color: _warna, width: 2),
+                  ),
                   labelText: "Dari Tanggal",
+                  labelStyle:
+                      TextStyle(fontWeight: FontWeight.bold, color: _warna),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   fillColor: Colors.green,
                   hintText: 'Tanggal'),
@@ -79,20 +86,31 @@ class _MonitoringBargingState extends State<MonitoringBarging> {
             ),
           ),
         ),
-        const Text("-"),
+        Text(
+          "-",
+          style: TextStyle(
+            color: _warna,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         SizedBox(
           width: 170,
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: TextFormField(
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      borderSide: BorderSide(
-                        color: Colors.blue,
-                        width: 10,
-                      )),
+              decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    borderSide: BorderSide(color: _warna, width: 2),
+                  ),
+                  border: const OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    borderSide: BorderSide(color: _warna, width: 2),
+                  ),
                   labelText: "Sampai Tanggal",
+                  labelStyle:
+                      TextStyle(fontWeight: FontWeight.bold, color: _warna),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   fillColor: Colors.green,
                   hintText: 'Tanggal'),

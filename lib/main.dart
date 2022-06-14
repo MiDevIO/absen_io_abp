@@ -1,7 +1,9 @@
+import 'package:face_id_plus/abp_energy/inventory/screen/menu_inventory.dart';
 import 'package:face_id_plus/abp_energy/monitoring/screen/menu_monitoring.dart';
 import 'package:face_id_plus/abp_energy/rkb/screen/menu_rkb.dart';
-import 'package:face_id_plus/abp_energy/sarpras/screen/MenuSapras.dart';
+import 'package:face_id_plus/abp_energy/sarpras/screen/menu_sapras.dart';
 import 'package:face_id_plus/abp_energy/landing/animated_loading.dart';
+import 'package:face_id_plus/permit/mainpage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import "package:flutter/services.dart";
@@ -42,7 +44,7 @@ class MyApp extends StatelessWidget {
   }
 
   _mainPage() {
-          // return const AnimatedLoading();
-          return const MenuSapras();
+          return const AnimatedLoading();
+          // return const MenuMonitoring();
   }
 }

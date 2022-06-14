@@ -17,7 +17,7 @@ class LihatAbsen extends StatefulWidget {
 
 class _LihatAbsenState extends State<LihatAbsen> {
   late AbsenProvider _provider;
-  Widget loader = const Center(child: CircularProgressIndicator());
+  Widget loader = Center(child: Image.asset("assets/load.gif", width: 70, height: 70));
   int _selectedNavbar = 0;
   String apiStatus = "Masuk";
   final ScrollController _scrollController = ScrollController();

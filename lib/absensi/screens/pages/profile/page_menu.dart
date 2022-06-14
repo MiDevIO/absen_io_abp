@@ -71,12 +71,12 @@ class _MenuPageState extends State<MenuPage> {
         ));
   }
 
-  Widget logo(){
+  Widget logo() {
     return SizedBox(
       width: 150,
       height: 150,
       child: Image.asset("assets/images/abp_60x60.png"),
-    );  
+    );
   }
 
   Widget menuGrid() {
@@ -285,32 +285,39 @@ class _MenuPageState extends State<MenuPage> {
             child: InkWell(
               onTap: () {
                 showDialog(
-                  context: context,
-                  builder: (context){
-                    return Dialog(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                      elevation: 16,
-                      child: SizedBox(
-                        height: 230,
-                        width: 400,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 20),
-                              child: Image.asset("assets/images/dev.png", height: 100, width: 100),
-                            ),
-                            const SizedBox(height: 20),
-                            const Text("Fitur Belum Tersedia",style: TextStyle(fontWeight: FontWeight.bold),),
-                            const SizedBox(height: 20,),
-                            const Text("Maaf, fitur sedang dalam tahap pengembangan")
-                          ],
+                    context: context,
+                    builder: (context) {
+                      return Dialog(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        elevation: 16,
+                        child: SizedBox(
+                          height: 230,
+                          width: 400,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 20),
+                                child: Image.asset("assets/images/dev.png",
+                                    height: 100, width: 100),
+                              ),
+                              const SizedBox(height: 20),
+                              const Text(
+                                "Fitur Belum Tersedia",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              const Text(
+                                  "Maaf, fitur sedang dalam tahap pengembangan")
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  }
-                );
+                      );
+                    });
                 // Navigator.push(
                 //     context,
                 //     MaterialPageRoute(
@@ -463,8 +470,6 @@ class _MenuPageState extends State<MenuPage> {
     } else {
       showAbsen = 0;
     }
-    setState(() {
-      
-    });
+    setState(() {});
   }
 }

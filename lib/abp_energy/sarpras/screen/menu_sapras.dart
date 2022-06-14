@@ -18,13 +18,21 @@ class _MenuSaprasState extends State<MenuSapras> {
         backgroundColor: color,
         title: const Text("Menu Sapras"),
       ),
-      body: menuGrid(),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [Colors.blueGrey, Colors.lightBlueAccent]),
+        ),
+        child: menuGrid(),
+      ),
     );
   }
 
   Widget menuGrid() {
     return Padding(
-      padding: const EdgeInsets.only(right: 40, left: 40),
+      padding: const EdgeInsets.only(right: 40, left: 40, top: 20),
       child: GridView.count(
         crossAxisSpacing: 30,
         mainAxisSpacing: 5,
@@ -50,8 +58,8 @@ class _MenuSaprasState extends State<MenuSapras> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/images/sarana.png",
-                      width: 110,
+                      "assets/images/car.png",
+                      width: 150,
                       height: 80,
                     ),
                     const Text(
@@ -87,8 +95,8 @@ class _MenuSaprasState extends State<MenuSapras> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Image.asset(
-                      "assets/images/sarana_add.png",
-                      width: 110,
+                      "assets/images/car_add.png",
+                      width: 150,
                       height: 80,
                     ),
                     const Text(

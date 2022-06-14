@@ -23,7 +23,15 @@ class _MenuMonitoringState extends State<MenuMonitoring> {
         backgroundColor: const Color.fromARGB(255, 32, 72, 142),
         title: const Text("Menu Monitoring"),
       ),
-      body: menuGrid(),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [Colors.blueGrey, Colors.lightBlueAccent]),
+        ),
+        child: menuGrid(),
+      ),
     );
   }
 
@@ -199,7 +207,7 @@ class _MenuMonitoringState extends State<MenuMonitoring> {
                     Image.asset(
                       "assets/images/stock.png",
                       width: 140,
-                      height: 100,
+                      height: 110,
                     ),
                     const SizedBox(height: 5),
                     const Text(
@@ -232,25 +240,25 @@ class _MenuMonitoringState extends State<MenuMonitoring> {
                     Image.asset(
                       "assets/images/product_stock.png",
                       width: 200,
-                      height: 100,
+                      height: 110,
                     ),
                     const SizedBox(height: 5),
                     const FittedBox(
                       fit: BoxFit.contain,
                       child: Text(
-                        "STOCK",
+                        "STOCK PRODUCT",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.blue),
                       ),
                     ),
-                    const FittedBox(
-                      fit: BoxFit.contain,
-                      child: Text(
-                        "PRODUCT",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.blue),
-                      ),
-                    ),
+                    // const FittedBox(
+                    //   fit: BoxFit.contain,
+                    //   child: Text(
+                    //     "PRODUCT",
+                    //     style: TextStyle(
+                    //         fontWeight: FontWeight.bold, color: Colors.blue),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

@@ -74,8 +74,12 @@ class _BuletinState extends State<Buletin> {
                           padding: const EdgeInsets.only(top: 250),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              CircularProgressIndicator(),
+                            children: [
+                              Image.asset(
+                                "assets/load.gif",
+                                width: 75,
+                                height: 75,
+                              ),
                             ],
                           ),
                         )
