@@ -2,6 +2,7 @@ import 'package:face_id_plus/abp_energy/sarpras/screen/list_sapras/list_driver.d
 import 'package:face_id_plus/abp_energy/sarpras/screen/list_sapras/list_penumpang.dart';
 import 'package:face_id_plus/abp_energy/sarpras/screen/list_sapras/list_sarana.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 
 class FormSapras extends StatefulWidget {
@@ -23,6 +24,18 @@ class _FormSaprasState extends State<FormSapras> {
   final TextEditingController tglKembali = TextEditingController();
   final TextEditingController jamKembali = TextEditingController();
   final TextEditingController keperluan = TextEditingController();
+  DateTime dt = DateTime.now();
+  DateFormat fmt = DateFormat('dd MMMM yyyy');
+  DateTime? tglHazard;
+  DateTime? jamHazard;
+
+  @override
+  void initState() {
+    tglHazard = dt;
+    jamHazard =
+        DateTime(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +44,16 @@ class _FormSaprasState extends State<FormSapras> {
       appBar: AppBar(
         title: const Text("Form Izin Sarana"),
         backgroundColor: _warna,
+        leading: InkWell(
+          splashColor: const Color(0xff000000),
+          child: const Icon(
+            Icons.arrow_back_ios_new,
+            color: Colors.white,
+          ),
+          onTap: () {
+            Navigator.maybePop(context);
+          },
+        ),
         actions: [
           IconButton(
             onPressed: () {},
@@ -83,7 +106,8 @@ class _FormSaprasState extends State<FormSapras> {
                               borderSide: BorderSide(color: _warna, width: 2),
                             ),
                             labelText: "Sarana",
-                            labelStyle: TextStyle(fontWeight: FontWeight.bold, color: _warna),
+                            labelStyle: TextStyle(
+                                fontWeight: FontWeight.bold, color: _warna),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             fillColor: Colors.green,
                             hintText: 'Masukkan Sarana'),
@@ -133,7 +157,8 @@ class _FormSaprasState extends State<FormSapras> {
                               borderSide: BorderSide(color: _warna, width: 2),
                             ),
                             labelText: "Driver",
-                            labelStyle: TextStyle(fontWeight: FontWeight.bold, color: _warna),
+                            labelStyle: TextStyle(
+                                fontWeight: FontWeight.bold, color: _warna),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             fillColor: Colors.green,
                             hintText: 'Masukkan Driver'),
@@ -183,7 +208,8 @@ class _FormSaprasState extends State<FormSapras> {
                               borderSide: BorderSide(color: _warna, width: 2),
                             ),
                             labelText: "Penumpang",
-                            labelStyle: TextStyle(fontWeight: FontWeight.bold, color: _warna),
+                            labelStyle: TextStyle(
+                                fontWeight: FontWeight.bold, color: _warna),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             fillColor: Colors.green,
                             hintText: 'Masukkan Penumpang'),
@@ -228,7 +254,6 @@ class _FormSaprasState extends State<FormSapras> {
                           minLines: 6,
                           keyboardType: TextInputType.multiline,
                           maxLines: 10,
-                          cursorColor: Theme.of(context).cursorColor,
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                 borderRadius:
@@ -242,7 +267,8 @@ class _FormSaprasState extends State<FormSapras> {
                                 borderSide: BorderSide(color: _warna, width: 2),
                               ),
                               labelText: "Keperluan",
-                              labelStyle: TextStyle(fontWeight: FontWeight.bold, color: _warna),
+                              labelStyle: TextStyle(
+                                  fontWeight: FontWeight.bold, color: _warna),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               fillColor: Colors.white,
@@ -325,22 +351,19 @@ class _FormSaprasState extends State<FormSapras> {
                         borderSide: BorderSide(color: _warna, width: 2),
                       ),
                       labelText: "Tanggal Keluar",
-                      labelStyle: TextStyle(fontWeight: FontWeight.bold, color: _warna),
+                      labelStyle:
+                          TextStyle(fontWeight: FontWeight.bold, color: _warna),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       fillColor: Colors.green,
                       hintText: 'Masukkan Tanggal'),
                   controller: tglKeluar,
                   onTap: () async {
-                    DateTime? date;
-                    FocusScope.of(context).requestFocus(FocusNode());
-                    date = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(1900),
-                        lastDate: DateTime(2100));
-
-                    var _tanggal = "${date!.day}-${date.month}-${date.year}";
-                    tglKeluar.text = _tanggal;
+                    var tgl = await _selectDate(context, tglHazard!);
+                    if (tgl != null) {
+                      setState(() {
+                        tglKeluar.text = fmt.format(tgl);
+                      });
+                    }
                   },
                   readOnly: true,
                 ),
@@ -370,29 +393,21 @@ class _FormSaprasState extends State<FormSapras> {
                         borderSide: BorderSide(color: _warna, width: 2),
                       ),
                       labelText: "Jam Keluar",
-                      labelStyle: TextStyle(fontWeight: FontWeight.bold, color: _warna),
+                      labelStyle:
+                          TextStyle(fontWeight: FontWeight.bold, color: _warna),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       fillColor: Colors.green,
                       hintText: 'Masukkan Jam'),
                   controller: jamKeluar,
                   onTap: () async {
-                    TimeOfDay? pickedTime;
-                    pickedTime = await showTimePicker(
-                      initialTime: TimeOfDay.now(),
-                      context: context,
-                    );
-
-                    if (pickedTime != null) {
-                      print(pickedTime.format(context));
-                      DateTime parsedTime = DateFormat.jm()
-                          .parse(pickedTime.format(context).toString());
-                      String formattedTime =
-                          DateFormat('HH:mm a').format(parsedTime);
+                    dt = DateTime.now();
+                    jamHazard = dt;
+                    var jam = await _seletTime(context, jamHazard!);
+                    if (jam != null) {
                       setState(() {
-                        jamKeluar.text = formattedTime;
+                        jamKeluar.text =
+                            "${jam.hour.toString().padLeft(2, '0')} : ${jam.minute.toString().padLeft(2, '0')}";
                       });
-                    } else {
-                      print("Time is not selected");
                     }
                   },
                   readOnly: true,
@@ -433,22 +448,19 @@ class _FormSaprasState extends State<FormSapras> {
                         borderSide: BorderSide(color: _warna, width: 2),
                       ),
                       labelText: "Tanggal Keluar",
-                      labelStyle: TextStyle(fontWeight: FontWeight.bold, color: _warna),
+                      labelStyle:
+                          TextStyle(fontWeight: FontWeight.bold, color: _warna),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       fillColor: Colors.green,
                       hintText: 'Masukkan Tanggal'),
                   controller: tglKembali,
                   onTap: () async {
-                    DateTime? date;
-                    FocusScope.of(context).requestFocus(FocusNode());
-                    date = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(1900),
-                        lastDate: DateTime(2100));
-
-                    var _tanggal = "${date!.day}-${date.month}-${date.year}";
-                    tglKembali.text = _tanggal;
+                    var tgl = await _selectDate(context, tglHazard!);
+                    if (tgl != null) {
+                      setState(() {
+                        tglKembali.text = fmt.format(tgl);
+                      });
+                    }
                   },
                   readOnly: true,
                 ),
@@ -477,30 +489,22 @@ class _FormSaprasState extends State<FormSapras> {
                             const BorderRadius.all(Radius.circular(10)),
                         borderSide: BorderSide(color: _warna, width: 2),
                       ),
-                      labelText: "Jam Keluar",
-                      labelStyle: TextStyle(fontWeight: FontWeight.bold, color: _warna),
+                      labelText: "Jam Kembali",
+                      labelStyle:
+                          TextStyle(fontWeight: FontWeight.bold, color: _warna),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       fillColor: Colors.green,
                       hintText: 'Masukkan Jam'),
                   controller: jamKembali,
                   onTap: () async {
-                    TimeOfDay? pickedTime;
-                    pickedTime = await showTimePicker(
-                      initialTime: TimeOfDay.now(),
-                      context: context,
-                    );
-
-                    if (pickedTime != null) {
-                      print(pickedTime.format(context));
-                      DateTime parsedTime = DateFormat.jm()
-                          .parse(pickedTime.format(context).toString());
-                      String formattedTime =
-                          DateFormat('HH:mm a').format(parsedTime);
+                    dt = DateTime.now();
+                    jamHazard = dt;
+                    var jam = await _seletTime(context, jamHazard!);
+                    if (jam != null) {
                       setState(() {
-                        jamKembali.text = formattedTime;
+                        jamKembali.text =
+                            "${jam.hour.toString().padLeft(2, '0')} : ${jam.minute.toString().padLeft(2, '0')}";
                       });
-                    } else {
-                      print("Time is not selected");
                     }
                   },
                   readOnly: true,
@@ -511,5 +515,15 @@ class _FormSaprasState extends State<FormSapras> {
         ),
       ),
     );
+  }
+
+  Future<DateTime?> _selectDate(BuildContext context, DateTime initDate) async {
+    return await DatePicker.showDatePicker(context,
+        showTitleActions: true, maxTime: dt, currentTime: initDate);
+  }
+
+  Future<DateTime?> _seletTime(BuildContext context, DateTime jamHazard) async {
+    return await DatePicker.showTimePicker(context,
+        showTitleActions: true, currentTime: jamHazard);
   }
 }

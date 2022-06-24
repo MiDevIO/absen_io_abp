@@ -1,4 +1,13 @@
+import 'package:face_id_plus/abp_energy/monitoring/bloc/api_repository.dart';
+import 'package:face_id_plus/abp_energy/monitoring/bloc/stock_bloc.dart';
+import 'package:face_id_plus/abp_energy/monitoring/bloc/stock_state.dart';
+import 'package:face_id_plus/abp_energy/monitoring/model/stock_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class MonitoringStockProduct extends StatefulWidget {
   const MonitoringStockProduct({Key? key}) : super(key: key);
@@ -9,29 +18,91 @@ class MonitoringStockProduct extends StatefulWidget {
 
 class _MonitoringStockProductState extends State<MonitoringStockProduct> {
   final Color _warna = const Color.fromARGB(255, 32, 72, 142);
+  bool isLoading = false;
+  int page = 1;
+  int totalPage = 0;
+  late StockBloc stockBloc;
+  RefreshController refreshController = RefreshController();
+  List<DataStock>? _data;
+  bool pullUp = true;
+  DateTime dt = DateTime.now();
+  DateTime? tglfilter;
+  final drTglController = TextEditingController();
+  final sampaiTglController = TextEditingController();
+  DateFormat fmt = DateFormat('dd MMMM yyyy');
+
+  @override
+  void initState() {
+    tglfilter = dt;
+    _data = [];
+    _data!.clear();
+    stockBloc = StockBloc(ApiRepository());
+    stockBloc.tampilStock(page);
+    initializeDateFormatting();
+    super.initState();
+  }
+
+  void onUpdate() async {
+    setState(() {
+      if (page < totalPage) {
+        page++;
+        stockBloc.tampilStock(page);
+      } else {
+        refreshController.refreshCompleted();
+        refreshController.loadComplete();
+      }
+    });
+  }
+
+  void onRefresh() async {
+    setState(() {
+      _data!.clear();
+      page = 1;
+      stockBloc.tampilStock(page);
+      Future.delayed(const Duration(seconds: 2), () {
+        refreshController.refreshCompleted();
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey,
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 32, 72, 142),
         title: const Text("Monitoring Stock Product"),
+        leading: InkWell(
+          splashColor: const Color(0xff000000),
+          child: const Icon(
+            Icons.arrow_back_ios_new,
+            color: Colors.white,
+          ),
+          onTap: () {
+            Navigator.maybePop(context);
+          },
+        ),
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: [Colors.blueGrey, Colors.lightBlueAccent]),
-        ),
-        child: Column(
-          children: [
-            bagianTgl(),
-            Expanded(
-              child: contentOB(),
+      body: Stack(
+        children: <Widget>[
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [Colors.lightBlueAccent, Colors.white]),
             ),
-          ],
-        ),
+          ),
+          BlocProvider(
+            create: (context) => stockBloc,
+            child: Column(
+              children: [
+                bagianTgl(),
+                Expanded(child: content()),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -73,18 +144,14 @@ class _MonitoringStockProductState extends State<MonitoringStockProduct> {
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   fillColor: Colors.green,
                   hintText: 'Tanggal'),
-              // controller: dariTgl,
+              controller: drTglController,
               onTap: () async {
-                DateTime? date;
-                FocusScope.of(context).requestFocus(FocusNode());
-                date = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(1900),
-                    lastDate: DateTime(2100));
-
-                var _tanggal = "${date!.day}-${date.month}-${date.year}";
-                // dariTgl.text = _tanggal;
+                var tgl = await _selectDate(context, tglfilter!);
+                if (tgl != null) {
+                  setState(() {
+                    drTglController.text = fmt.format(tgl);
+                  });
+                }
               },
               readOnly: true,
             ),
@@ -118,18 +185,14 @@ class _MonitoringStockProductState extends State<MonitoringStockProduct> {
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   fillColor: Colors.green,
                   hintText: 'Tanggal'),
-              // controller: dariTgl,
+              controller: sampaiTglController,
               onTap: () async {
-                DateTime? date;
-                FocusScope.of(context).requestFocus(FocusNode());
-                date = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(1900),
-                    lastDate: DateTime(2100));
-
-                var _tanggal = "${date!.day}-${date.month}-${date.year}";
-                // dariTgl.text = _tanggal;
+                var tgl = await _selectDate(context, tglfilter!);
+                if (tgl != null) {
+                  setState(() {
+                    sampaiTglController.text = fmt.format(tgl);
+                  });
+                }
               },
               readOnly: true,
             ),
@@ -145,99 +208,120 @@ class _MonitoringStockProductState extends State<MonitoringStockProduct> {
     );
   }
 
-  Widget contentOB() {
+  Widget content() {
+    return BlocListener<StockBloc, StockState>(
+      listener: (BuildContext context, state) {
+        if (state is LoadingStock) {
+        } else if (state is LoadedStock) {
+          var dataStock = state.apiStock.monitoringStock;
+          if (dataStock != null) {
+            totalPage = dataStock.lastPage!;
+            if (page == totalPage) {
+              pullUp = false;
+            } else {
+              pullUp = true;
+            }
+            var apiData = dataStock.data;
+            _data!.addAll(apiData!);
+          }
+          refreshController.loadComplete();
+          refreshController.refreshCompleted();
+        }
+      },
+      child: BlocBuilder<StockBloc, StockState>(
+          builder: (BuildContext context, state) {
+        if (state is InitStock) {
+          return SmartRefresher(
+            controller: refreshController,
+            onRefresh: () => onRefresh(),
+            onLoading: onUpdate,
+            enablePullUp: pullUp,
+            child: Center(
+              child: Image.asset(
+                'assets/load.gif',
+                width: 70,
+              ),
+            ),
+          );
+        } else if (state is ErrorStock) {
+          return SmartRefresher(
+              controller: refreshController,
+              onRefresh: () => onRefresh(),
+              onLoading: onUpdate,
+              enablePullUp: pullUp,
+              child: const Center(
+                child: Text("Tidak Ada Data Waiting"),
+              ));
+        }
+        return SmartRefresher(
+          enablePullUp: pullUp,
+          enablePullDown: true,
+          onRefresh: () => onRefresh(),
+          controller: refreshController,
+          onLoading: onUpdate,
+          child: GridView.count(
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 5,
+            crossAxisCount: 2,
+            childAspectRatio: (1 / 0.7),
+            children: _data!.map((e) => contentStock(e)).toList(),
+          ),
+        );
+      }),
+    );
+  }
+
+  Widget contentStock(DataStock stock) {
+    var f = NumberFormat("###,###.0#", "en_US");
+    var sp = f.format(stock.stockProduct);
+    DateFormat fmt = DateFormat.yMMMMd("id");
+    var tanggal = DateTime.parse("${stock.tgl}");
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: GridView.count(
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 5,
-        crossAxisCount: 2,
-        childAspectRatio: (1 / 0.7),
-        children: <Widget>[
-          Card(
-            elevation: 20,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            margin: const EdgeInsets.all(8.0),
-            child: Column(
-              children: const [
-                SizedBox(
-                  height: 40,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 32, 72, 142),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                      ),
-                    ),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "28 Mei 2022",
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                    ),
+      child: Card(
+        elevation: 20,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        margin: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 40,
+              child: DecoratedBox(
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 32, 72, 142),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10),
                   ),
                 ),
-                SizedBox(height: 10),
-                Text(
-                  "Stock Product",
-                  style: TextStyle(
-                      color: Colors.grey, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  "10,702.089 MT",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                ),
-              ],
-            ),
-          ),
-          Card(
-            elevation: 10,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            margin: const EdgeInsets.all(8.0),
-            child: Column(
-              children: const [
-                SizedBox(
-                  height: 40,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 32, 72, 142),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                      ),
-                    ),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "28 Mei 2022",
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                    ),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    fmt.format(tanggal),
+                    style: const TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
-                SizedBox(height: 10),
-                Text(
-                  "Stock Product",
-                  style: TextStyle(
-                      color: Colors.grey, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  "10,702.089 MT",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                ),
-              ],
+              ),
             ),
-          ),
-        ],
+            const SizedBox(height: 10),
+            const Text(
+              "Stock Product",
+              style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              "$sp MT",
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  Future<DateTime?> _selectDate(BuildContext context, DateTime initDate) async {
+    return await DatePicker.showDatePicker(context,
+        showTitleActions: true, maxTime: dt, currentTime: initDate);
   }
 }

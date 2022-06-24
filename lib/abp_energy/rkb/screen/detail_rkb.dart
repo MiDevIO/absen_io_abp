@@ -17,6 +17,16 @@ class _DetailRKBState extends State<DetailRKB> {
       appBar: AppBar(
         backgroundColor: color,
         title: const Text("00153/ABP/RKB/LOGISTIC/2022"),
+        leading: InkWell(
+          splashColor: const Color(0xff000000),
+          child: const Icon(
+            Icons.arrow_back_ios_new,
+            color: Colors.white,
+          ),
+          onTap: () {
+            Navigator.maybePop(context);
+          },
+        ),
       ),
       body: Container(
         height: double.infinity,

@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
   }
 
   _mainPage() {
-          return const AnimatedLoading();
-          // return const MenuMonitoring();
+          // return const AnimatedLoading();
+          return const MenuMonitoring();
   }
 }

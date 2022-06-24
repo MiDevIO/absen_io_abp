@@ -23,6 +23,16 @@ class _CancelRKBState extends State<CancelRKB> {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 32, 72, 142),
         title: const Text("Rencana Kebutuhan Barang"),
+        leading: InkWell(
+          splashColor: const Color(0xff000000),
+          child: const Icon(
+            Icons.arrow_back_ios_new,
+            color: Colors.white,
+          ),
+          onTap: () {
+            Navigator.maybePop(context);
+          },
+        ),
       ),
       bottomNavigationBar: bottomNavigator(),
       body: Container(

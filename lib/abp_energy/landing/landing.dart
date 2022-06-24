@@ -156,7 +156,7 @@ class _LandingPageState extends State<LandingPage> {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.apps_rounded),
-          label: 'Abp System',
+          label: 'ABP System',
         ),
       ],
       currentIndex: _selectedIndex,

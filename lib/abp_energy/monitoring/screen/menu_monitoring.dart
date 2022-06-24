@@ -211,7 +211,7 @@ class _MenuMonitoringState extends State<MenuMonitoring> {
                     ),
                     const SizedBox(height: 5),
                     const Text(
-                      "STOCK ROOM",
+                      "STOCK ROM",
                       style: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.blue),
                     ),

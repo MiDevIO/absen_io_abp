@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:face_id_plus/abp_energy/sarpras/screen/form_sapras.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SaranaPrasana extends StatefulWidget {
@@ -12,26 +13,39 @@ class SaranaPrasana extends StatefulWidget {
 
 class _SaranaPrasanaState extends State<SaranaPrasana> {
   Color color = const Color.fromARGB(255, 32, 72, 142);
-  TextStyle style = const TextStyle(
-      fontWeight: FontWeight.bold, color: Color.fromARGB(255, 91, 90, 90));
+  TextStyle style = const TextStyle(fontWeight: FontWeight.bold, color: Color.fromARGB(255, 91, 90, 90));
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: color,
         title: const Text("Keluar Masuk Sarana"),
+        leading: InkWell(
+          splashColor: const Color(0xff000000),
+          child: const Icon(
+            Icons.arrow_back_ios_new,
+            color: Colors.white,
+          ),
+          onTap: () {
+            Navigator.maybePop(context);
+          },
+        ),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
           IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => const FormSapras(),
-                  ),
-                );
-              },
-              icon: const Icon(Icons.add)),
+            onPressed: () {},
+            icon: const Icon(Icons.search),
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => const FormSapras(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.add),
+          ),
         ],
       ),
       body: Container(
@@ -169,17 +183,23 @@ class _SaranaPrasanaState extends State<SaranaPrasana> {
                     thickness: 1,
                     color: Colors.black,
                   ),
-                  const SizedBox(
+                  SizedBox(
                     width: 230,
                     height: 30,
                     child: Card(
                       elevation: 20,
-                      color: Colors.green,
-                      child: Center(
-                        child: Text(
-                          "Disetujui | 08:51:16 28 Mei 2022",
-                          style: TextStyle(color: Colors.white),
-                        ),
+                      color: Colors.orange,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: const [
+                          CupertinoActivityIndicator(
+                            color: Colors.white,
+                          ),
+                          Text(
+                            "Menunggu Persetujuan",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
                       ),
                     ),
                   ),

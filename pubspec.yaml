@@ -73,6 +73,7 @@ dependencies:
   lazy_load_scrollview: 
   carousel_slider: 
   platform_device_id:
+  get: ^4.6.5
 
 dev_dependencies:
   flutter_test:

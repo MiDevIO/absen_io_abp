@@ -14,6 +14,22 @@ class _StockState extends State<Stock> {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 32, 72, 142),
         title: const Text("Stock Inventory"),
+        leading: InkWell(
+          splashColor: const Color(0xff000000),
+          child: const Icon(
+            Icons.arrow_back_ios_new,
+            color: Colors.white,
+          ),
+          onTap: () {
+            Navigator.maybePop(context);
+          },
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.search),
+          ),
+        ],
       ),
       body: SizedBox(
         height: double.infinity,
